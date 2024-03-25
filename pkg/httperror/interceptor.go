@@ -4,14 +4,11 @@ import (
 	"net/http"
 )
 
-// ErrorHandlerInterceptor intercepts responses for common HTTP error conditions.
 func ErrorHandlerInterceptor(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Use a ResponseWriter that allows us to intercept and inspect the status code
 		interceptWriter := NewInterceptWriter(w)
 		next.ServeHTTP(interceptWriter, r)
 
-		// After the handler has finished, check the status code and handle errors
 		switch interceptWriter.statusCode {
 		case http.StatusNotFound:
 			HandleNotFoundError(w, "The requested resource was not found")
@@ -29,21 +26,18 @@ func ErrorHandlerInterceptor(next http.Handler) http.Handler {
 	})
 }
 
-// NewInterceptWriter creates an instance of InterceptWriter.
 func NewInterceptWriter(w http.ResponseWriter) *InterceptWriter {
 	return &InterceptWriter{
 		ResponseWriter: w,
-		statusCode:     http.StatusOK, // Default to 200 OK
+		statusCode:     http.StatusOK,
 	}
 }
 
-// InterceptWriter is a custom http.ResponseWriter that captures the status code.
 type InterceptWriter struct {
 	http.ResponseWriter
 	statusCode int
 }
 
-// WriteHeader captures the status code and calls the underlying WriteHeader.
 func (iw *InterceptWriter) WriteHeader(code int) {
 	iw.statusCode = code
 	iw.ResponseWriter.WriteHeader(code)

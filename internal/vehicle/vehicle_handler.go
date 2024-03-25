@@ -3,7 +3,7 @@ package vehicle
 import (
 	"encoding/json"
 	"net/http"
-	"sales/vehicle/pkg/httperror" // Substitua com o caminho correto do seu pacote
+	"sales/vehicle/pkg/httperror"
 
 	"github.com/gorilla/mux"
 )
@@ -18,7 +18,6 @@ func NewHandler(service Service) *Handler {
 	}
 }
 
-// RegisterVehicleRoutes registra as rotas de veículos no roteador.
 func (h *Handler) RegisterVehicleRoutes(router *mux.Router) {
 	router.Handle("/vehicles", httperror.ErrorHandlerInterceptor(http.HandlerFunc(h.CreateVehicle))).Methods("POST")
 	router.Handle("/vehicles/{id}", httperror.ErrorHandlerInterceptor(http.HandlerFunc(h.GetVehicle))).Methods("GET")
@@ -41,7 +40,6 @@ func (h *Handler) CreateVehicle(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(v)
 }
 
-// GetVehicle é um manipulador HTTP para buscar um veículo por ID.
 func (h *Handler) GetVehicle(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	v, err := h.Service.GetVehicle(r.Context(), id)
@@ -52,7 +50,6 @@ func (h *Handler) GetVehicle(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(v)
 }
 
-// ListVehicles é um manipulador HTTP para listar todos os veículos.
 func (h *Handler) ListVehicles(w http.ResponseWriter, r *http.Request) {
 	vehicles, err := h.Service.ListVehicles(r.Context())
 	if err != nil {
@@ -62,7 +59,6 @@ func (h *Handler) ListVehicles(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(vehicles)
 }
 
-// UpdateVehicle é um manipulador HTTP para atualizar um veículo existente.
 func (h *Handler) UpdateVehicle(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	var v Vehicle
@@ -73,20 +69,21 @@ func (h *Handler) UpdateVehicle(w http.ResponseWriter, r *http.Request) {
 	if err := h.Service.UpdateVehicle(r.Context(), id, &v); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-	} else if err == nil { // Checa se o serviço retornou 'nil', indicando que o veículo não foi encontrado
+	} else if err == nil {
+		// TODO - FIX
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 	json.NewEncoder(w).Encode(v)
 }
 
-// DeleteVehicle é um manipulador HTTP para deletar um veículo.
 func (h *Handler) DeleteVehicle(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	if err := h.Service.DeleteVehicle(r.Context(), id); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-	} else if err == nil { // Checa se o serviço retornou 'nil', indicando que o veículo não foi encontrado
+	} else if err == nil {
+		// TODO - FIX
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}

@@ -1,4 +1,3 @@
-// pkg/config/config.go
 package config
 
 import (
@@ -17,7 +16,7 @@ type DBConfig struct {
 }
 
 func LoadDatabaseConfig() DBConfig {
-	err := godotenv.Load() // Carrega as variáveis de ambiente do arquivo .env
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
