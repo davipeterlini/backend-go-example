@@ -10,8 +10,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
-	"sales/vehicle/internal/entity/vehicle"
-	"sales/vehicle/internal/repository"
+	"sales/vehicle/internal/generics/repository"
+	"sales/vehicle/internal/vehicle"
 	"strings"
 
 	"github.com/gorilla/mux"

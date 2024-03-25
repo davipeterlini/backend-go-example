@@ -3,7 +3,7 @@ package vehicle
 
 import (
 	"context"
-	"sales/vehicle/internal/repository" // Substitua pelo caminho correto até o seu BaseRepository
+	"sales/vehicle/internal/generics/repository" // Substitua pelo caminho correto até o seu BaseRepository
 )
 
 // VehicleRepository oferece métodos específicos para trabalhar com veículos no banco de dados.
