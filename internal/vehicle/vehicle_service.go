@@ -58,22 +58,30 @@ func (s *VehicleService) ListVehicles(ctx context.Context) ([]*Vehicle, error) {
 	return vehicles, nil
 }
 
-// UpdateVehicle atualiza os detalhes de um veículo existente.
 func (s *VehicleService) UpdateVehicle(ctx context.Context, id string, v *Vehicle) error {
-	if id == "" || v.Name == "" || v.Model == "" {
-		return errors.New("vehicle id, name, and model are required")
+	// Verifique se o veículo existe antes da atualização
+	existingVehicle, err := s.repo.Read(ctx, id)
+	if err != nil {
+		return err // Pode ser um erro de conexão ao banco de dados ou similar
+	}
+	if existingVehicle == nil {
+		return nil
 	}
 
-	// Aqui você pode adicionar validações ou lógicas de negócios antes de atualizar o veículo
+	// Prossiga com a atualização, pois o veículo existe
 	return s.repo.Update(ctx, id, v)
 }
 
-// DeleteVehicle remove um veículo do banco de dados.
 func (s *VehicleService) DeleteVehicle(ctx context.Context, id string) error {
-	if id == "" {
-		return errors.New("the vehicle id is required for deletion")
+	// Verifique se o veículo existe antes da deleção
+	existingVehicle, err := s.repo.Read(ctx, id)
+	if err != nil {
+		return err // Pode ser um erro de conexão ao banco de dados ou similar
+	}
+	if existingVehicle == nil {
+		return nil
 	}
 
-	// Chamando o repositório para remover o veículo
+	// Prossiga com a deleção, pois o veículo existe
 	return s.repo.Delete(ctx, id)
 }

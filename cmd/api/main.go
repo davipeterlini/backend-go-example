@@ -122,7 +122,7 @@ func main() {
 	router := mux.NewRouter()
 
 	// Registra as rotas do Handler no roteador.
-	handler.RegisterRoutes(router)
+	handler.RegisterVehicleRoutes(router)
 
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
