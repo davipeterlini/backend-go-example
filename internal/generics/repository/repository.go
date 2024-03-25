@@ -13,7 +13,6 @@ type BaseRepository struct {
 	db *sql.DB
 }
 
-// DB returns the database connection instance.
 func (repo *BaseRepository) DB() *sql.DB {
 	return repo.db
 }
@@ -34,8 +33,6 @@ func NewBaseRepository() (*BaseRepository, error) {
 
 	return &BaseRepository{db: db}, nil
 }
-
-// Generic CRUD operations that can be used for any entity
 
 func (r *BaseRepository) Create(ctx context.Context, table string, columns []string, values []interface{}) error {
 	placeholders := make([]string, len(values))
